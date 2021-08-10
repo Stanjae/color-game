@@ -1,0 +1,282 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>colorgame</title>
+    <link rel="stylesheet" href="/color.css">
+</head>
+
+<body>
+    <div id="app" class="wrapper">
+        <div id="myNav" class="overlay play content">
+            <a href="javascript:void(0)" class="closebtn" v-on:click="close()">&times;</a>
+            <div class="overlay-content">
+                <h1 class="white_text">GAME OVER</h1>
+                <div class="over_box">
+                    <h2>YOUR SCORE</h2>
+                    <div id="display_score"></div>
+                    <button class="btn" v-on:click="restart()">RESTART</button>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div id="myNav1" class="overlay1 play">
+            <div class="overlay-content1">
+                <h1 class="white_text">PAUSE</h1>
+                <div class="over_box1">
+                    <img src="img/pause.svg" alt="">
+                    <div id="display_score"></div>
+                    <button class="btn" id="continue" v-on:click="cont()">CONTINUE</button>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div v-bind:class="header">
+            <div v-bind:class=[padding_c,center_align]>
+                <h1 class=" glow font center_align">Color Game</h1>
+            </div>
+            <div class="a" v-bind:class="lives">
+                <div>lives: <span id="lives">5</span> </div>
+                <div>Score : <span id="scoreline">0</span> </div>
+                <div>Time : <span id="sec">30</span> </div>
+            </div>
+        </div>
+        <div v-bind:class={gray:true}>
+
+            <div v-bind:class="container">
+                <div v-bind:class="just">
+                    <div id="col0" v-bind:class="role_m"></div>
+                </div>
+                <div id="boxes" v-bind:class="rust">
+                    <div id="col1" disabled=false v-on:click="checker('col1')" v-bind:style="">
+
+                    </div>
+                    <div v-on:click="checker('col2')" id="col2">
+
+                    </div>
+                    <div v-on:click="checker( 'col3')" id="col3">
+
+                    </div>
+                </div>
+                <div>
+                    <button v-bind:class="button" id="start" v-on:click="start()">Start</button>
+                    <button v-bind:class="button1" id="stop_b" v-on:click="stop()">Pause</button>
+
+
+                </div>
+            </div>
+
+        </div>
+        <div class="footer">
+            <p>Stanjhae29 &copy; 2021</p>
+        </div>
+
+    </div>
+
+    <script type="text/javascript" src="vue.js"></script>
+    <script type="text/javascript">
+        var Timeu = 30;
+        var score = 0;
+        var lives = 5;
+        var audiolife = document.getElementById('aud');
+
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                //for wrapper
+                blanket: {
+                    wrapper: true
+                },
+                //for header
+                header: {
+                    flex_column: true,
+                    crimson: true
+                },
+                comp: {
+                    lives: 5,
+                    score: 0,
+                    Timing: 30,
+
+                },
+                //for lives section
+                lives: {
+                    flex_row: true,
+                    black: true,
+                    padding_b: true,
+                    pixel: true
+                },
+                color_attr: ["red", "green", "pink", "purple", "orange", "blue"],
+                role_m: {
+                    square: true,
+                    crimson: true,
+                    margin: true
+                },
+                just: {
+                    padding_a: true
+                },
+                rust: {
+                    flex_row: true
+                },
+                counter: false,
+                button: {
+                    butt: true,
+                    green: true,
+                    white_text: true
+                },
+                button1: {
+                    butt: true,
+                    crimson: true,
+                    white_text: true
+                },
+                btn2: {
+                    butt: true,
+                    gray: true,
+                    black_text: true,
+                    display: true
+
+                }
+
+
+            },
+            computed: {},
+            methods: {
+                start: function() {
+                    this.counter = true;
+                    document.getElementById("stop_b").disabled = false;
+                    document.getElementById("start").disabled = true;
+                    document.getElementById("start").style.backgroundColor = '#001a00';
+                    document.getElementById("stop_b").style.backgroundColor = 'crimson';
+
+
+                    this.timer();
+                    this.main_func();
+
+
+                },
+                stop: function() {
+                    document.getElementById("stop_b").disabled = true;
+                    document.getElementById("start").disabled = false;
+                    document.getElementById("myNav1").style.display = "display";
+                    document.getElementById("myNav1").style.height = "80%";
+                    document.getElementById("myNav1").style.opacity = "1.0"
+                    document.getElementById("myNav1").style.top = "10%";
+                    document.getElementById("start").style.backgroundColor = 'green';
+                    document.getElementById("stop_b").style.backgroundColor = '#750b20';
+
+                    this.counter = false;
+                },
+                cont: function() {
+                    document.getElementById("myNav1").style.top = "-600px";
+                    document.getElementById("myNav1").style.opacity = "0.1"
+                    document.getElementById("myNav1").style.transitionDuration = "2s";
+                    document.getElementById("stop_b").disabled = false;
+                    document.getElementById("stop_b").style.backgroundColor = 'crimson';
+                    this.counter = "wayo";
+                    this.timer();
+                },
+
+                timer: function() {
+                    var second = document.getElementById("sec");
+                    if (this.counter == true) {
+
+                        //second.innerText = this.Time;
+                        Timeu = Timeu - 1;
+                        if (Timeu == 0) {
+                            Timeu = 0;
+                            second.innerText = Timeu;
+                            this.gameover();
+                            audiolife.play();
+                        } else {
+                            console.log(Timeu);
+                            second.innerText = Timeu;
+                            setTimeout(this.timer, 1000);
+                        }
+
+                    } else if (this.counter == "wayo") {
+                        this.counter = true;
+                        setTimeout(this.timer, 1000);
+                    } else {
+                        document.getElementById("sec").disabled = false;
+                        this.counter = false;
+                    }
+                },
+                rando: function() {
+                    var rand = Math.floor(Math.random() * 6);
+                    var rand1 = Math.floor(Math.random() * 6);
+                    var rand2 = Math.floor(Math.random() * 6);
+                    var rand3 = Math.floor(Math.random() * 6);
+
+                    var div0 = document.getElementById("col0");
+                    var div1 = document.getElementById("col1");
+                    var div2 = document.getElementById("col2");
+                    var div3 = document.getElementById("col3");
+
+                    div0.style.backgroundColor = this.color_attr[rand];
+                    div1.style.backgroundColor = this.color_attr[rand1];
+                    div2.style.backgroundColor = this.color_attr[rand2];
+                    div3.style.backgroundColor = this.color_attr[rand3];
+
+                    if (rand != rand1 && rand != rand2 && rand != rand3) {
+                        this.rando();
+                    }
+
+                    return rand;
+                },
+                main_func: function(e) {
+                    document.getElementById("start").disabled = true;
+                    this.rando();
+                    console.log(this.rando())
+
+                },
+                checker: function(v) {
+                    let _this = this;
+                    var c = document.getElementById(v);
+                    var say = document.getElementById("col0");
+                    if ((c.style.backgroundColor) == say.style.backgroundColor) {
+                        score += 10;
+                        document.getElementById('scoreline').innerText = score;
+                        _this.main_func();
+                    } else if (c.style.backgroundColor != say.style.backgroundColor) {
+                        lives = lives - 1;
+                        document.getElementById('lives').innerText = lives;
+                        if (lives < 1) {
+                            this.gameover();
+                        }
+                        _this.main_func();
+                    }
+                },
+                gameover: function() {
+                    document.getElementById("myNav").style.display = "display";
+                    document.getElementById("myNav").style.height = "100%";
+                    var score = document.getElementById('scoreline').innerText;
+                    document.getElementById('display_score').innerText = score;
+                    Document.getElementById("aud").play()
+                },
+                close: function() {
+                    document.getElementById("myNav").style.height = "0%";
+                    this.restart()
+                },
+                restart: function() {
+                    window.location.reload();
+                },
+
+
+
+
+
+
+
+
+
+            }
+        })
+    </script>
+</body>
+
+</html>
