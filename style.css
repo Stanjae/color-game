@@ -206,7 +206,8 @@
         position: fixed;
         z-index: 1;
         top: 0;
-        left: 300px;
+        left: 20%;
+        right: 20%;
         background-color: rgb(0, 0, 0);
         background-color: rgba(0, 0, 0, 0.9);
         overflow-y: hidden;
@@ -249,15 +250,19 @@
     }
     /* for the glowing text */
     
-    .glow {
-        animation: glow 1s ease-in-out infinite alternate;
+    
+ /* media queries for pause curtain */
+    
+    @media only screen and (max-width: 812px) {
+        .overlay1 {
+            width: 80%;
+            left: 13%;
+        }
     }
     
-    @keyframes glow {
-        from {
-            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
-        }
-        to {
-            text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+    @media only screen and (max-width: 658px) {
+        .overlay1 {
+            width: 100%;
+            left: 0%;
         }
     }
