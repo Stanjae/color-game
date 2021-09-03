@@ -53,7 +53,7 @@
                 <div v-bind:class="just">
                     <div id="col0" v-bind:class="role_m"></div>
                 </div>
-                <div id="boxes" v-bind:class="rust">
+                <div id="boxes" v-show="bird" v-bind:class="rust">
                     <div id="col1" disabled=false v-on:click="checker('col1')" v-bind:style="">
 
                     </div>
@@ -98,6 +98,7 @@
                     flex_column: true,
                     crimson: true
                 },
+                bird:false,
                 comp: {
                     lives: 5,
                     score: 0,
@@ -147,6 +148,7 @@
             computed: {},
             methods: {
                 start: function() {
+                    this.bird= true;
                     this.counter = true;
                     document.getElementById("stop_b").disabled = false;
                     document.getElementById("start").disabled = true;
